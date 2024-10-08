@@ -1,71 +1,47 @@
+#include "ui_designer.h"
 #include <QCoreApplication>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QApplication>
+#include <QMainWindow>
+#include <QMessageBox>
 #include <QDebug>
+#include "version.h"
+#include "log.h"
+#include "main.h"
+#include "core.h"
 
-int main(int argc, char *argv[])
+
+int main(int argc, char* argv[])
 {
-    QCoreApplication a(argc, argv);
-
-    // 创建网络访问管理器
-    QNetworkAccessManager manager;
-
-    // 创建GET请求
-    QNetworkRequest request(QUrl("http://www.baidu.com"));
-
-    // 发送GET请求
-    QNetworkReply *reply = manager.get(request);
-
-    // 连接信号槽，处理响应
-    QObject::connect(reply, &QNetworkReply::finished, [&]()
+    bool is_auth = true;
+    qDebug() << "CURRENT_VERSION_CODE is: " << CURRENT_VERSION_CODE;
+    debug_flag = true;
+    if (debug_flag)
     {
-        if (reply->error() == QNetworkReply::NoError)
-        {
-            // 获取请求的 URL
-            qDebug() << "Request URL:" << reply->request().url();
+        WhoRun = __FUNCTION__;
+        Logger::instance()->logMessage(WhoRun, QString("当前版本: ") + CURRENT_VERSION_CODE);
+    }
+    // // 定义试用截止时间，例如：2024年12月31日23:59:59
+    // QDateTime trialEndTime = QDateTime::fromString("2024-10-16T23:59:59", Qt::ISODate);
+    WhoRun = __FUNCTION__;
+    Logger::instance()->logMessage(WhoRun, QString("Request approval for testing..."));
 
-            // 输出请求头信息
-            qDebug() << "Request Headers:";
-            QList<QByteArray> requestHeaders = reply->request().rawHeaderList();
-            foreach (const QByteArray &header, requestHeaders) {
-                qDebug() << header << ":" << reply->request().rawHeader(header);
-            }
+    // 获取当前系统时间
+    QDateTime currentTime = QDateTime::currentDateTime();
+    // 创建 QT 应用程序对象，初始化应用程序环境
+    QApplication Core(argc, argv);
+    // 如果当前时间小于试用截止时间，则退出程序
 
-            // 获取响应码
-            int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-            qDebug() << "HttpStatusCodeAttribute:" << statusCode;
-
-            // 连接是否加密的标志
-            bool connectionEncryptedAttribute = reply->attribute(QNetworkRequest::ConnectionEncryptedAttribute).toBool();
-            qDebug() << "ConnectionEncryptedAttribute:" << connectionEncryptedAttribute;
-
-            // 请求是否来自缓存的标志
-            bool sourceIsFromCacheAttribute = reply->attribute(QNetworkRequest::SourceIsFromCacheAttribute).toBool();
-            qDebug() << "SourceIsFromCacheAttribute:" << sourceIsFromCacheAttribute;
-
-            // HTTP请求是否被允许进行流水线处理的标志
-            bool httpPipeliningAllowedAttribute = reply->attribute(QNetworkRequest::HttpPipeliningAllowedAttribute).toBool();
-            qDebug() << "HttpPipeliningAllowedAttribute:" << httpPipeliningAllowedAttribute;
-
-            // 输出响应头信息
-            qDebug() << "Response Headers:";
-            QList<QByteArray> responseHeaders = reply->rawHeaderList();
-            foreach (const QByteArray &header, responseHeaders) {
-                qDebug() << header << ":" << reply->rawHeader(header);
-            }
-
-            // 处理响应内容，这里可以使用 readAll() 方法获取响应内容
-            // qDebug() << "Response Content:" << reply->readAll();
-        } else
-        {
-            qDebug() << "Error:" << reply->errorString();
-        }
-
-        // 释放资源
-        reply->deleteLater();
-        QCoreApplication::quit();
-    });
-
-    return a.exec();
+    if (is_auth != true) {
+        QMessageBox::critical(nullptr, "体验结束(OS: " + QString(CURRENT_VERSION_CODE) + ")", "本阶段的测试已结束。\n感谢您的关注！");
+        return 0; // 退出程序
+    } else
+    {
+        QMessageBox::warning(nullptr, "体验提醒OS: " + QString(CURRENT_VERSION_CODE) + ")", "注意内部版本体验期之后无法继续体验。\n感谢您的关注！");
+    }
+    MainWindow UI; // 创建主窗口对象，代表用户界面
+    UI.show();// 显示主窗口
+    return QApplication::exec();
 }

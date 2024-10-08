@@ -50,22 +50,15 @@ set(REQUIRED_LIBS_QUALIFIED
 add_executable(${PROJECT_NAME}
         main.cpp
         #ui类
-        ui_auto.h
-        core.h
-        core.cpp
-        Serial.h
-        Serial.cpp
-        solve.cpp
-        solve.h
-        global_var.h
-        #log
-        log.cpp
-        #资源文件
-        resource/src.qrc
-        security.cpp
-        security.h
+        ui_designer.h
         version.h
-        #        resource/icon.rc
+        core.cpp
+        core.h
+        var_global.h
+        main.h
+        #log
+        log.h
+        log.cpp
 )
 
 find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
