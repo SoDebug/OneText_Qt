@@ -21,11 +21,16 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QPlainTextEdit>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 #include <QSerialPort>
 #include <QSerialPortInfo>
 #include <QString>
 #include <QTableWidget>
 #include <QTimer>
+
+extern QString PartLine;
 
 namespace Ui
 {
@@ -41,14 +46,20 @@ public:
 
     ~MainWindow() override;
 
+	int SetupSlot();
+	void Slot_SendRequest_pushButton();
+
 
 signals:
 
 
 public slots:
-
+	void on_finished();
+	void on_readyRead();
 
 
 private:
 	Ui::MainWindow* ui;
+	QNetworkAccessManager networkManager;   // 网络管理
+	QNetworkReply *reply;                   // 网络响应
 };

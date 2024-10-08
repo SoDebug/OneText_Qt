@@ -44,6 +44,7 @@ set(REQUIRED_LIBS_QUALIFIED
         Qt${QT_VERSION}::Gui
         Qt${QT_VERSION}::Widgets
         Qt${QT_VERSION}::SerialPort
+        Qt${QT_VERSION}::Core5Compat
         Qt::Network
 )
 
@@ -61,6 +62,6 @@ add_executable(${PROJECT_NAME}
         log.cpp
 )
 
-find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED)
+find_package(Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED Core5Compat)
 find_package(OpenSSL REQUIRED)
 target_link_libraries(${PROJECT_NAME} ${REQUIRED_LIBS_QUALIFIED} OpenSSL::Crypto)

@@ -7,6 +7,7 @@
 
 bool debug_flag;
 QString WhoRun;
+QString PartLine;
 
 
 #endif //VAR_GLOBAL_H
