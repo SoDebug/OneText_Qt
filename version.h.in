@@ -1,0 +1,10 @@
+//
+// Created by LiJinChuan on 2024/9/29.
+//
+
+#ifndef VERSION_H
+#define VERSION_H
+
+#define CURRENT_VERSION_CODE "@CURRENT_VERSION_CODE@"
+
+#endif //VERSION_H
