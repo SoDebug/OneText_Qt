@@ -12,6 +12,8 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QJsonObject>
+#include <QJsonDocument>
 #include <QThread>
 #include <QTimer>
 #include <iostream>
@@ -56,18 +58,43 @@ void MainWindow::on_finished()
 // 读入页面源代码
 void MainWindow::on_readyRead()
 {
+    QString OneText;
+    QString Source;
     qDebug() << "All Data as follow";
-    QByteArray cache = reply->readAll();
-    qDebug() << "RAW Data is: " + cache;
-    // 尝试GBK解码
-    QTextCodec *codec_gbk = QTextCodec::codecForName("GBK");
-    QString gbkString = codec_gbk->toUnicode(cache);
-    qDebug() << "Decode Data is: " << gbkString;
-    ui->Display_HaveReceived->insertPlainText(gbkString + "\n");
-    QTextCodec *codec_utf8 = QTextCodec::codecForName("UTF-8");
-    QString utf8String = codec_utf8->toUnicode(cache);
-    qDebug() << "Decode Data is: " << utf8String;
-    ui->Display_HaveReceived->insertPlainText(utf8String + "\n");
+    QByteArray content = reply->readAll();
+    QString decode;
+    qDebug() << "RAW Data is: " + content;
+    if (ui->RequestReturnEncode_comboBox->currentIndex() == 0) {
+        QTextCodec *encode = QTextCodec::codecForName("UTF-8");
+        decode = encode->toUnicode(content);
+    } else if (ui->RequestReturnEncode_comboBox->currentIndex() == 1) {
+        QTextCodec *encode = QTextCodec::codecForName("GBK");
+        decode = encode->toUnicode(content);
+    }
+    if(ui->RequestReturnType_comboBox->currentText() == "json") {
+        qDebug() << "We should analyse response, cause u take json to receive!";
+        QJsonDocument raw_response = QJsonDocument::fromJson(decode.toUtf8());
+        qDebug() << raw_response;
+        QJsonObject raw_response_ojb = raw_response.object();
+        qDebug() << "id is: " << raw_response_ojb.value("id");
+        qDebug() << "uuid is: " << raw_response_ojb.value("uuid");
+        qDebug() << "hitokoto is: " << raw_response_ojb.value("hitokoto");
+        qDebug() << "from is: " << raw_response_ojb.value("from");
+        qDebug() << "from_who is: " << raw_response_ojb.value("from_who");
+        OneText = raw_response_ojb.value("hitokoto").toString();
+        Source = raw_response_ojb.value("from").toString();
+    }
+    ui->Display_HaveReceived->insertPlainText(decode + "\n");
+
+    ui->Display_Screen->clear();
+    QString OneText_Show = QString("<div align=\"center\">%1</div><div align=\"right\">%2</div>")
+                        .arg(OneText)
+                        .arg("————" + Source);
+    ui->Display_Screen->setText(OneText_Show);
+    // 设置垂直居中
+    ui->Display_Screen->document()->setDefaultStyleSheet(
+        "body { display: flex; align-items: center; height: 100%; }"
+    );
 }
 
 
