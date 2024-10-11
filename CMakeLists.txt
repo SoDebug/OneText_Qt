@@ -38,7 +38,7 @@ configure_file(
 
 
 #set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
-set(REQUIRED_LIBS Core Gui Widgets SerialPort Network)
+set(REQUIRED_LIBS Core Gui Widgets SerialPort Network Sql)
 set(REQUIRED_LIBS_QUALIFIED
         Qt${QT_VERSION}::Core
         Qt${QT_VERSION}::Gui
@@ -46,6 +46,7 @@ set(REQUIRED_LIBS_QUALIFIED
         Qt${QT_VERSION}::SerialPort
         Qt${QT_VERSION}::Core5Compat
         Qt::Network
+        Qt${QT_VERSION}::Sql
 )
 
 add_executable(${PROJECT_NAME}

@@ -56,6 +56,7 @@ signals:
 public slots:
 	void on_finished();
 	void on_readyRead();
+	void InitialDataBase();
 
 
 private:

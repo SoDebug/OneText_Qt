@@ -17,6 +17,9 @@
 #include <QThread>
 #include <QTimer>
 #include <iostream>
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QSqlQuery>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -25,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     PartLine = "========";
     // init();
     SetupSlot();
+    InitialDataBase();
 }
 
 MainWindow::~MainWindow()
@@ -172,6 +176,29 @@ void MainWindow::Slot_SendRequest_pushButton() {
     // 读入数据的槽函数绑定
     connect(reply, SIGNAL(readyRead()), this, SLOT(on_readyRead()));
 
+}
 
+void MainWindow::InitialDataBase() {
+    QSqlDatabase local_dataBase;
+    local_dataBase = QSqlDatabase::addDatabase("QSQLITE");
+    local_dataBase.setDatabaseName("data.db");
+    if (!local_dataBase.open()) {
+        qDebug() << "Error: Failed to open database!";
+    }
 
+    qDebug() << "Database connected successfully!";
+
+    // 创建数据表
+    QSqlQuery query;
+    query.exec("CREATE TABLE IF NOT EXISTS hitokoto ("
+               "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+               "uuid TEXT UNIQUE NOT NULL,"
+               "hitokoto TEXT NOT NULL,"
+               "source TEXT,"
+               "from_who TEXT,"
+               "create_time DATETIME DEFAULT CURRENT_TIMESTAMP)");
+
+    if (query.lastError().isValid()) {
+        qDebug() << "Error: Failed to create table!" << query.lastError();
+    }
 }
