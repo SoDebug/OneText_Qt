@@ -83,6 +83,9 @@ void MainWindow::on_readyRead()
         qDebug() << "from_who is: " << raw_response_ojb.value("from_who");
         OneText = raw_response_ojb.value("hitokoto").toString();
         Source = raw_response_ojb.value("from").toString();
+    } else if (ui->RequestReturnType_comboBox->currentText() == "text") {
+        OneText = content;
+        Source = "未曾蒙面的你";
     }
     ui->Display_HaveReceived->insertPlainText(decode + "\n");
 
@@ -91,10 +94,6 @@ void MainWindow::on_readyRead()
                         .arg(OneText)
                         .arg("————" + Source);
     ui->Display_Screen->setText(OneText_Show);
-    // 设置垂直居中
-    ui->Display_Screen->document()->setDefaultStyleSheet(
-        "body { display: flex; align-items: center; height: 100%; }"
-    );
 }
 
 
