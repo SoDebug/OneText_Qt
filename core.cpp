@@ -192,6 +192,7 @@ void MainWindow::InitialDataBase() {
     QSqlQuery query;
     query.exec("CREATE TABLE IF NOT EXISTS hitokoto ("
                "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+               "type TEXT,"
                "uuid TEXT UNIQUE NOT NULL,"
                "hitokoto TEXT NOT NULL,"
                "source TEXT,"
