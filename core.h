@@ -57,6 +57,9 @@ public slots:
 	void on_finished();
 	void on_readyRead();
 	void InitialDataBase();
+	bool SaveToDataBase(const QString &uuid, const QString &type ,const QString &hitokoto, const QString &source, const QString &from_who);
+	void fetchRandomHitokotoFromDatabase();
+	QString TypeTranslate(const int index);
 
 
 private:
