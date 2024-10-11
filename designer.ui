@@ -272,7 +272,7 @@
                 </item>
                </widget>
               </item>
-              <item row="4" column="0" colspan="2">
+              <item row="5" column="0" colspan="2">
                <layout class="QHBoxLayout" name="horizontalLayout_3">
                 <item>
                  <widget class="QFrame" name="frame">
@@ -335,6 +335,39 @@
                  </widget>
                 </item>
                </layout>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="SimulationRequest_label">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>模拟请求</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1">
+               <widget class="QComboBox" name="SimulationRequest_comboBox">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>禁用</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>启用</string>
+                 </property>
+                </item>
+               </widget>
               </item>
              </layout>
             </item>

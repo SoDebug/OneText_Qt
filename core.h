@@ -46,8 +46,12 @@ public:
 
     ~MainWindow() override;
 
+	QTimer *simmulation = new QTimer(this);
 	int SetupSlot();
 	void Slot_SendRequest_pushButton();
+	void slot_IsSimulation();
+	void simmulation_timeout();
+	void emitInfoStatus(const QString &msg);
 
 
 signals:

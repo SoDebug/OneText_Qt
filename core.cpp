@@ -38,8 +38,31 @@ MainWindow::~MainWindow()
 
 int MainWindow::SetupSlot() {
     connect(ui->SendRequest_pushButton, &QPushButton::clicked, this, &MainWindow::Slot_SendRequest_pushButton);
+    connect(ui->SimulationRequest_comboBox, &QComboBox::currentIndexChanged, this, &MainWindow::slot_IsSimulation);
     return 0;
+}
 
+void MainWindow::emitInfoStatus(const QString &msg)
+{
+    ui->statusbar->showMessage(msg);
+}
+
+void MainWindow::slot_IsSimulation() {
+    if (ui->SimulationRequest_comboBox->currentIndex() == 0) {
+        qDebug() << "Disable Simmulation!";
+        if (simmulation->isActive()) {
+            simmulation->stop();
+            emitInfoStatus("模拟请求已停止！");
+        }
+    } else if (ui->SimulationRequest_comboBox->currentIndex() == 1) {
+        connect(simmulation, &QTimer::timeout, this, &MainWindow::simmulation_timeout);
+        simmulation->start(10000);
+    }
+}
+
+void MainWindow::simmulation_timeout() {
+    emitInfoStatus("正在模拟请求中！");
+    ui->SendRequest_pushButton->click();
 }
 
 void MainWindow::on_finished()
